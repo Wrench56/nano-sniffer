@@ -1,10 +1,9 @@
 #include <Arduino.h>
+#include "comhub.h"
 
-int main() {
-    init();
+void setup() {
+    init_comhub();
+}
 
-    /* Mainloop */
-    for (;;) {}
-
-    return 0;
+void loop() {
 }
