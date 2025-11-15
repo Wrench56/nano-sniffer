@@ -1,0 +1,11 @@
+# Ignore playground/ directory
+playground/
+
+# Ignore CCLS cache
+.ccls-cache/
+
+# Ignore build directory
+build/
+
+# Ignore commitlint executable
+tools/commitlint*
