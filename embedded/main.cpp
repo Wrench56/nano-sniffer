@@ -6,4 +6,5 @@ void setup() {
 }
 
 void loop() {
+    handle_comhub();
 }
