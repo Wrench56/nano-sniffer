@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 #include "ble_transport.h"
 
 BLEService bleService(BLE_SERVICE_UUID);
@@ -61,6 +63,8 @@ int BLETransport::read() {
 uint32_t BLETransport::write(const uint8_t* d, size_t len) {
     if (gBleCentral.connected()) {
         txChar.writeValue(d, len);
+        BLE.poll();
+        delay(5);
         return len;
     }
 }
