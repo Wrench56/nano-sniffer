@@ -1,74 +1,74 @@
 #include <Arduino.h>
+
 #include "comhub.h"
 #include "main.h"
+
+#include "transport.h"
+#include "utility.h"
 
 static char input_buf[NS_COMHUB_BUF_SIZE];
 static comhub_state_t currstate = COMHUB_MENU;
 static int available = 0;
-static const arduino::__FlashStringHelper* strheader = F("[ ======================== ]");
-static const arduino::__FlashStringHelper* strempty = F("[ >                        ]");
+static constexpr char strheader[] = "[ ======================== ]";
+static constexpr char strempty[] = "[ >                        ]";
 
-void init_comhub(void) {
-    Serial.begin(COMHUB_BAUD_RATE, SERIAL_8N1);
-    while (!Serial) {}
-
-    Serial.println(F(" "));
-    Serial.println(strheader);
-    Serial.println(F("[ > Init Nano-Sniffer      ]"));
-    Serial.println(F("[ >              v" NS_VERSION_STR " ]"));
-    Serial.println(strempty);
-    Serial.println(F("[ > Built on:              ]"));
-    Serial.println(F("[ >   "__DATE__ " " __TIME__" ]"));
-    Serial.println(strheader);
-    Serial.println();
+void init_comhub(ITransport* gio) {
+    GIO_WRITE(gio, " ");
+    GIO_WRITE(gio, strheader);
+    GIO_WRITE(gio, "[ > Init Nano-Sniffer      ]");
+    GIO_WRITE(gio, "[ >              v" NS_VERSION_STR " ]");
+    GIO_WRITE(gio, strempty);
+    GIO_WRITE(gio, "[ > Built on:              ]");
+    GIO_WRITE(gio, "[ >   "__DATE__ " " __TIME__" ]");
+    GIO_WRITE(gio, strheader);
+    GIO_WRITE(gio, " ");
 }
 
-static void show_menu(void) {
-    Serial.println(F("[ =[ Menu ]=============== ]"));
-    Serial.println(strempty);
-    Serial.println(F("[ > [h]elp - show this     ]"));
-    Serial.println(F("[ >                        ]"));
-    Serial.println(strheader);
+static void show_menu(ITransport* gio) {
+    GIO_WRITE(gio, "[ =[ Menu ]=============== ]");
+    GIO_WRITE(gio, strempty);
+    GIO_WRITE(gio, "[ > [h]elp - show this     ]");
+    GIO_WRITE(gio, "[ >                        ]");
+    GIO_WRITE(gio, strheader);
 }
 
-void handle_comhub(void) {
-    available = Serial.available();
+void handle_comhub(ITransport* gio) {
+    available = gio->available();
     if (available > 0) {
         switch (currstate) {
             case COMHUB_MENU:
-                handle_menu();
+                handle_menu(gio);
                 break;
             default:
-                handle_menu();
+                handle_menu(gio);
                 break;
         }
 
-        /* Drain Serial buffer manually */
-        while (available--) {
-            Serial.read();
-        }
+        gio->drain();
     }
 }
 
-static inline void handle_menu() {
+static inline void handle_menu(ITransport* gio) {
     if (available == 1) {
-        char c = Serial.read();
+        char c = gio->read();
         if (c == 'h') {
-            show_menu();
+            show_menu(gio);
         }
     } else if (available == 4) {
         char buf[4] = { 0 };
-        read2Buffer(buf, available);
+        read_to_buffer(buf, available, gio);
         if (strncmp(buf, "help", 4) == 0) {
-            show_menu();
+            show_menu(gio);
         }
     } else {
-        Serial.println("Invalid menu command!");
+        GIO_WRITE(gio, "Invalid menu command!");
     }
 }
 
-static inline void read2Buffer(char* buffer, size_t length) {
-    for (int i = 0; i < length; i++) {
-        buffer[i] = Serial.read();
+static inline void read_to_buffer(char* buffer, uint16_t length, ITransport* gio) {
+    for (uint16_t i = 0; i < length; ++i) {
+        int ch = gio->read();
+        if (ch < 0) break;
+        buffer[i] = static_cast<char>(ch);
     }
 }

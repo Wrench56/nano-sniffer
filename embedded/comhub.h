@@ -3,17 +3,18 @@
 
 #include <stdint.h>
 
-#define COMHUB_BAUD_RATE 115200
+#include "transport.h"
+
 #define NS_COMHUB_BUF_SIZE 256
 
 typedef enum {
     COMHUB_MENU,
 } comhub_state_t;
 
-void init_comhub(void);
-void handle_comhub(void);
+void init_comhub(ITransport* gio);
+void handle_comhub(ITransport* gio);
 
-static inline void read2Buffer(char* buffer, size_t length);
-static inline void handle_menu();
+static inline void read_to_buffer(char* buffer, uint16_t length, ITransport* gio);
+static inline void handle_menu(ITransport* gio);
 
 #endif // NS_COMHUB_H
