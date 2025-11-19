@@ -7,6 +7,8 @@
 #include "ble_transport.h"
 #include "uart_transport.h"
 
+#include "led.h"
+
 #include "utility.h"
 
 ITransport* gio = nullptr;
@@ -16,6 +18,8 @@ BLETransport ble_serial;
 void setup() {
     init_uart();
     init_ble();
+    led_init();
+
     transport_type_t type = pick_transport_type(0);
     if (type == TRANSPORT_USB) {
         gio = &usb_serial;
@@ -28,8 +32,7 @@ void setup() {
         }
         GIO_WRITE(gio, "Using BLE Serial as control transport!");
     } else {
-        pinMode(LED_BUILTIN, OUTPUT);
-        digitalWrite(LED_BUILTIN, HIGH);
+        led_set(LED_ON);
         return;
     }
 
