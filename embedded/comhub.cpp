@@ -29,8 +29,9 @@ static void show_menu(ITransport* gio) {
     GIO_WRITE(gio, "\n\r");
     GIO_WRITE(gio, "[ =[ Menu ]=============== ]\n\r");
     GIO_WRITE(gio, strempty);
-    GIO_WRITE(gio, "[ > [h]elp - show this     ]\n\r");
-    GIO_WRITE(gio, "[ >                        ]\n\r");
+    GIO_WRITE(gio, "[ > [h]elp  - show this    ]\n\r");
+    GIO_WRITE(gio, "[ > [r]elay - start relay  ]\n\r")
+    GIO_WRITE(gio, strempty);
     GIO_WRITE(gio, strheader);
     GIO_WRITE(gio, "\n\r");
 }
