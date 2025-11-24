@@ -8,6 +8,7 @@
 #include "uart_transport.h"
 
 #include "led.h"
+#include "storage.h"
 
 #include "utility.h"
 
@@ -19,6 +20,8 @@ void setup() {
     init_uart();
     init_ble();
     led_init();
+    storage_init();
+    storage_load();
 
     transport_type_t type = pick_transport_type(0);
     if (type == TRANSPORT_USB) {
