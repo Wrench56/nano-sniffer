@@ -14,7 +14,7 @@ public:
     explicit UartTransport(Stream& s) : io(s) {}
 
     int available() override;
-    int read() override;
+    uint8_t read() override;
     uint32_t write(const uint8_t* d, size_t l) override;
     void flush() override;
     void drain() override;

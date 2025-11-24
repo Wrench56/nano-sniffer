@@ -24,7 +24,7 @@ public:
 
     void onBleDataReceived(const uint8_t* data, size_t len);
     int available() override;
-    int read() override;
+    uint8_t read() override;
     uint32_t write(const uint8_t* d, size_t len) override;
     void drain() override;
 };

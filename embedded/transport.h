@@ -7,7 +7,7 @@
 class ITransport {
 public:
     virtual int available() = 0;
-    virtual int read() = 0;
+    virtual uint8_t read() = 0;
     virtual uint32_t write(const uint8_t* data, size_t len) = 0;
     virtual void flush() {}
     virtual void drain() {}

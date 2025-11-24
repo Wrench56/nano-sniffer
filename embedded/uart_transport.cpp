@@ -8,7 +8,7 @@ int UartTransport::available() {
     return io.available();
 }
 
-int UartTransport::read() {
+uint8_t UartTransport::read() {
     return io.read();
 }
 

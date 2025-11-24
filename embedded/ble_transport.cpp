@@ -51,7 +51,7 @@ int BLETransport::available() {
     return rxBuffer.length();
 }
 
-int BLETransport::read() {
+uint8_t BLETransport::read() {
     if (rxBuffer.isEmpty()) {
         return -1;
     }
