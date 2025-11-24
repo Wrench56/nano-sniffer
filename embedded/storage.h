@@ -15,6 +15,7 @@ typedef enum {
 typedef struct {
     uint32_t magic;
     char name[32];
+    uint32_t uart_baudrate;
 } storage_t;
 
 extern storage_t storage;

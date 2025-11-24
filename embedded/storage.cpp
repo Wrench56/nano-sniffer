@@ -53,6 +53,7 @@ void storage_load(void) {
         /* Load and save defaults */
         storage.magic = 0xDEADBEEF;
         strcpy(storage.name, const_cast<char*>("John Doe"));
+        storage.uart_baudrate = 115200;
         storage_save();
     }
 }
