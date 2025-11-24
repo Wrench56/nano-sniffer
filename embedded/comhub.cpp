@@ -4,32 +4,35 @@
 #include "main.h"
 
 #include "transport.h"
+#include "uart.h"
 #include "utility.h"
 
 static char input_buf[NS_COMHUB_BUF_SIZE];
 static comhub_state_t currstate = COMHUB_MENU;
 static int available = 0;
-static constexpr char strheader[] = "[ ======================== ]";
-static constexpr char strempty[] = "[ >                        ]";
+static constexpr char strheader[] = "[ ======================== ]\n\r";
+static constexpr char strempty[] = "[ >                        ]\n\r";
 
 void init_comhub(ITransport* gio) {
-    GIO_WRITE(gio, " ");
+    GIO_WRITE(gio, "\n\r");
     GIO_WRITE(gio, strheader);
-    GIO_WRITE(gio, "[ > Init Nano-Sniffer      ]");
-    GIO_WRITE(gio, "[ >              v" NS_VERSION_STR " ]");
+    GIO_WRITE(gio, "[ > Init Nano-Sniffer      ]\n\r");
+    GIO_WRITE(gio, "[ >              v" NS_VERSION_STR " ]\n\r");
     GIO_WRITE(gio, strempty);
-    GIO_WRITE(gio, "[ > Built on:              ]");
-    GIO_WRITE(gio, "[ >   "__DATE__ " " __TIME__" ]");
+    GIO_WRITE(gio, "[ > Built on:              ]\n\r");
+    GIO_WRITE(gio, "[ >   "__DATE__ " " __TIME__" ]\n\r");
     GIO_WRITE(gio, strheader);
-    GIO_WRITE(gio, " ");
+    GIO_WRITE(gio, "\n\r");
 }
 
 static void show_menu(ITransport* gio) {
-    GIO_WRITE(gio, "[ =[ Menu ]=============== ]");
+    GIO_WRITE(gio, "\n\r");
+    GIO_WRITE(gio, "[ =[ Menu ]=============== ]\n\r");
     GIO_WRITE(gio, strempty);
-    GIO_WRITE(gio, "[ > [h]elp - show this     ]");
-    GIO_WRITE(gio, "[ >                        ]");
+    GIO_WRITE(gio, "[ > [h]elp - show this     ]\n\r");
+    GIO_WRITE(gio, "[ >                        ]\n\r");
     GIO_WRITE(gio, strheader);
+    GIO_WRITE(gio, "\n\r");
 }
 
 void handle_comhub(ITransport* gio) {
@@ -61,7 +64,7 @@ static inline void handle_menu(ITransport* gio) {
             show_menu(gio);
         }
     } else {
-        GIO_WRITE(gio, "Invalid menu command!");
+        GIO_WRITE(gio, "Invalid menu command!\n\r");
     }
 }
 

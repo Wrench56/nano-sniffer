@@ -26,14 +26,14 @@ void setup() {
     transport_type_t type = pick_transport_type(0);
     if (type == TRANSPORT_USB) {
         gio = &usb_serial;
-        GIO_WRITE(gio, "Using USB Serial as control transport!");
+        GIO_WRITE(gio, "Using USB Serial as control transport!\n\r");
     } else if (type == TRANSPORT_BLE) {
         gio = &ble_serial;
         while (!txChar.subscribed() || !gBleCentral.connected()) {
             delay(1);
             BLE.poll();
         }
-        GIO_WRITE(gio, "Using BLE Serial as control transport!");
+        GIO_WRITE(gio, "Using BLE Serial as control transport!\n\r");
     } else {
         led_set(LED_ON);
         return;
