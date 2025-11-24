@@ -56,12 +56,16 @@ static inline void handle_menu(ITransport* gio) {
         char c = gio->read();
         if (c == 'h') {
             show_menu(gio);
+        } else if (c == 'r') {
+            uart_relay(gio);
         }
     } else if (available == 4) {
         char buf[4] = { 0 };
         read_to_buffer(buf, available, gio);
         if (strncmp(buf, "help", 4) == 0) {
             show_menu(gio);
+        } else if (strncmp(buf, "relay", 5) == 0) {
+            uart_relay(gio);
         }
     } else {
         GIO_WRITE(gio, "Invalid menu command!\n\r");

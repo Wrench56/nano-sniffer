@@ -7,6 +7,7 @@
 #include "utility.h"
 
 void uart_relay(ITransport* gio) {
+    GIO_WRITE(gio, "[ RDY ] Relaying UART messages...");
     uint32_t baudrate = storage.uart_baudrate;
     if (verify_baudrate(baudrate)) {
         Serial1.begin(baudrate);
